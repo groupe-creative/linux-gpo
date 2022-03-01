@@ -1,0 +1,39 @@
+- hosts:
+   - localhost
+  become: no
+  tasks:
+    - name: Copy systemd files
+      template:
+        src: "{{ files.src }}"
+        dest: "{{ files.dest }}"
+        mode: 0600
+        owner: root
+        group: root
+      loop: "{{ gpo_systemd_files }}"
+      loop_control:
+        loop_var: files
+
+    - name: Enable auto gpo updates.
+      systemd:
+        name: "{{ files.name }}"
+        enabled: yes
+        daemon_reload: yes
+      loop: "{{ gpo_systemd_files }}"
+      loop_control:
+        loop_var: files
+
+  vars:
+    gpo_systemd_files:
+      - name: gpo-update.service
+        src: "{{ playbook_dir }}/files/gpo-update.service"
+        dest: /etc/systemd/system/gpo-update.service
+      - name: gpo-update.timer
+        src: "{{ playbook_dir }}/files/gpo-update.timer"
+        dest: /etc/systemd/system/gpo-update.timer
+      - name: gpo-apply.service
+        src: "{{ playbook_dir }}/files/gpo-apply.service"
+        dest: /etc/systemd/system/gpo-apply.service
+      - name: gpo-apply.timer
+        src: "{{ playbook_dir }}/files/gpo-apply.timer"
+        dest: /etc/systemd/system/gpo-apply.timer
+

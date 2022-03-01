@@ -1,0 +1,9 @@
+[Unit]
+Description=Job de mise à jour des GPO.
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/bash -c '/root/gpo/linux-gpo/gpo-update.sh'
+
+[Install]
+WantedBy=multi-user.target

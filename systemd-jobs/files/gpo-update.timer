@@ -1,0 +1,17 @@
+[Unit]
+Description=Planifie un update des GPO toute les heures
+RefuseManualStart=no        # Allow manual starts
+RefuseManualStop=yes         # Allow manual stops
+
+[Timer]
+# Execute job if it missed a run due to machine being off
+Persistent=true
+# Run 120 seconds after boot for the first time
+OnBootSec=120
+# Run every 1 day thereafter
+OnUnitActiveSec=1d
+# File describing job to execute
+Unit=gpo-update.service
+
+[Install]
+WantedBy=timers.target

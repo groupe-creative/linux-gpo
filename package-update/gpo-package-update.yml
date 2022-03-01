@@ -1,0 +1,28 @@
+- hosts:
+   - localhost
+  become: no
+  tasks:
+    - name: Update system packages
+      apt:
+        name: "*"
+        state: latest
+
+    - name: Remove unwanted packages
+      apt:
+        name: "{{ item }}"
+        state: absent
+      loop: "{{ system_removed_packages }}"
+
+    - name: Add required packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ system_required_packages }}"
+
+  vars:
+    system_required_packages:
+      - vim
+      - keepassxc
+    system_removed_packages:
+      - emacs-nox
+

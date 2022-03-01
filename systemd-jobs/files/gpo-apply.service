@@ -1,0 +1,10 @@
+[Unit]
+Description=Job d'application des GPO.
+After=gpo-update.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/bash -c '/root/gpo/linux-gpo/gpo-apply.sh'
+
+[Install]
+WantedBy=multi-user.service
